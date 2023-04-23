@@ -1,16 +1,16 @@
-import { useContext } from 'react';
+import { useSelector } from 'react-redux';
 // hook que nos permite obtener una funcion de navegación
 import { useNavigate } from 'react-router-dom';
 
-import { CartContext } from '../../contexts/cart.context';
+import { selectCartItems } from '../../store/cart/cart.selector';
 
 import Button from '../button/button.component';
 import CartItem from '../cart-item/cart-item.component';
 
-import './cart-dropdown.styles.scss';
+import {CartDropdownContainer, EmptyMassage, CartItems} from './cart-dropdown.styles';
 
 const CartDropdown = () => {
-    const { cartItems } = useContext(CartContext);
+    const cartItems = useSelector(selectCartItems);
     const navigate = useNavigate();
 
     const goToCheckoutHandler = () => {
@@ -18,19 +18,19 @@ const CartDropdown = () => {
     }
 
     return (
-        <div className='cart-dropdown-container'>
-            <div className='cart-items'>
+        <CartDropdownContainer>
+            <CartItems>
                 {cartItems.length ? (
                     cartItems.map((cartItem) => (
                         <CartItem key={cartItem.id} cartItem={cartItem} />
                     ))
                 ) : (
-                    <span className='empty-message'>Your cart is empty</span>
+                    <EmptyMassage>Your cart is empty</EmptyMassage>
                 )}
                 
-            </div>
+            </CartItems>
             <Button onClick={goToCheckoutHandler}>GO TO CHECKOUT</Button>
-        </div>
+        </CartDropdownContainer>
     );
 };
 
